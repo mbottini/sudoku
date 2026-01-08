@@ -20,6 +20,9 @@ separately when managed by your package manager.
 
     cabal install
 
+Make sure that the install location is on your `PATH`. On Linux, by default
+this will end up in `/home/$USER/.local/bin`.
+
 # Running
 
     ./sudoku puzzle.txt       # opens puzzle.txt
