@@ -3,7 +3,7 @@ module ExactCover where
 import Data.List (transpose)
 import Data.Tuple (swap)
 
-data Row = Row {label :: String, vals :: [Bool]} deriving (Show)
+data Row a = Row {label :: a, vals :: [Bool]} deriving (Show)
 
 enumerate :: [a] -> [(Int, a)]
 enumerate = zip [0 ..]
@@ -28,7 +28,7 @@ createBitfield xss =
 -- Step 2: Find the column with the fewest Trues in it.
 -- None means that said column has _no_ Trues in it,
 -- which means that the computation has failed.
-chooseColumn :: [Row] -> Maybe Int
+chooseColumn :: [Row a] -> Maybe Int
 chooseColumn [] = Nothing
 chooseColumn rs =
   case go rs of
@@ -44,27 +44,27 @@ chooseColumn rs =
         . map vals
 
 -- Step 3: Find the rows that have a True in that column.
-findRows :: Int -> [Row] -> [Row]
+findRows :: Int -> [Row a] -> [Row a]
 findRows n =
   filter ((!! n) . vals)
 
-commonElement :: Row -> Row -> Bool
+commonElement :: Row a -> Row a -> Bool
 commonElement (Row _ v1) (Row _ v2) =
   or $ zipWith (&&) v1 v2
 
-dropCols :: Row -> Row -> Row
+dropCols :: Row a -> Row a -> Row a
 dropCols (Row _ v1) (Row l v2) =
   Row l . map snd . filter (not . fst) $ zip v1 v2
 
 -- Step 4: row index, remove all rows that share a True with that row,
 -- plus all columns from all rows where that row's column is True.
-pareRows :: Row -> [Row] -> [Row]
+pareRows :: Row a -> [Row a] -> [Row a]
 pareRows r =
   filter (not . null . vals)
     . map (dropCols r)
     . filter (not . commonElement r)
 
-algorithmX :: [Row] -> [[String]]
+algorithmX :: [Row a] -> [[a]]
 algorithmX = map (map label) . go
   where
     go [] = [[]] -- Step 1: if the matrix has no columns, terminate successfully (singleton empty list)
