@@ -25,9 +25,9 @@ this will end up in `/home/$USER/.local/bin`.
 
 # Running
 
-    ./sudoku puzzle.txt       # opens puzzle.txt
-    ./sudoku < puzzle.txt     # no filepath will read from stdin
-    ./sudoku - < puzzle.txt   # a single dash will also read from stdin
+    sudoku puzzle.txt       # opens puzzle.txt
+    sudoku < puzzle.txt     # no filepath will read from stdin
+    sudoku - < puzzle.txt   # a single dash will also read from stdin
 
 Or, if you didn't install, run with Cabal with
 
